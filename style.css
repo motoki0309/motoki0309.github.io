@@ -1,11 +1,13 @@
 main{
-    color: rgb(255, 241, 112);
+    color: rgb(62, 230, 40);
     font-size: 30px;
+    background-color: blue;
 }
 div{
-    color: chocolate;
+    color: rgb(228, 214, 27);
     font-size: 15px;
+    background-color: rgb(226, 43, 113);
 }
 body{
-    background-color: rgb(139, 0, 127);
+    background-color: rgb(255, 255, 255);
 }
