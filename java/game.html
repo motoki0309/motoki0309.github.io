@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.Random;
+
+
+public class Game{
+public static Frame Frame;
+public static boolean loop;
+public static void main(String[] args) {
+    Frame = new Frame();
+    loop = true;
+
+    int i=1;
+    int count=0;
+    int ulta=0;
+    int ultb=0;
+    int turn=0;
+    int turnb=0;
+
+    Graphics gra = Frame.panel.image.getGraphics();
+    
+    long startTime;
+        long fpsTime = 0;
+        int fps = 30;
+        int FPS = 0;
+        int FPSCount = 0;
+
+    Enue screen = Enue.START;
+
+    int playerX = 0, playerY = 0;
+    int playerx = 0, playery = 0;
+    int bombx = 0, bomby = 0;
+    //int bulletInterval = 0;
+         ArrayList<Bullet> bullets_player = new ArrayList<>();
+         ArrayList<Bullet> bullets_enemy = new ArrayList<>();
+         ArrayList<Enemy> enemies = new ArrayList<>();
+         Random random = new Random();
+
+    while(loop){
+
+        if((System.currentTimeMillis() - fpsTime) >= 1000) {
+            fpsTime = System.currentTimeMillis();
+            FPS = FPSCount;
+            FPSCount = 0;
+        }
+        FPSCount++;
+        startTime = System.currentTimeMillis();
+
+        gra.setColor(Color.WHITE);
+        gra.fillRect(0,0,500,500);
+       
+        switch(screen){
+            case START:
+            gra.setColor(Color.BLACK);
+            Font font = new Font("SansSerif", Font.PLAIN, 50);
+            gra.setFont(font);
+            FontMetrics metrics = gra.getFontMetrics(font);
+            gra.drawString("Game", 250 - (metrics.stringWidth("Game") / 2), 100);
+            font = new Font("SansSerif", Font.PLAIN, 20);
+            gra.setFont(font);
+            metrics = gra.getFontMetrics(font);
+            gra.drawString("Press SPACE to Start", 250 - (metrics.stringWidth("Press SPACE to Start") / 2), 160);
+            if(Keybord.isKeyPressed(KeyEvent.VK_SPACE)) {
+                screen = Enue.GAME;
+                bullets_player = new ArrayList<>();
+                bullets_enemy = new ArrayList<>();
+                enemies = new ArrayList<>();
+                playerX = 235;
+                playerY = 400;
+                playerx = 235;
+                playery = 100;
+                bombx = 235;
+                bomby = 250;
+                ulta=0;
+                ultb=0;
+                turn=0;
+                turnb=0;
+            }
+            break;
+            case GAME:
+            gra.setColor(Color.BLACK);
+            Font newfont = new Font("SansSerif", Font.PLAIN, 180);
+            gra.setFont(newfont);
+            FontMetrics newmetrics = gra.getFontMetrics(newfont);
+            gra.drawString("_______________________________________________________________", 300 - (newmetrics.stringWidth("_______________________________________________________________") / 2), 225);
+            if(count==1){  
+            gra.setColor(Color.YELLOW);
+            Font new1font = new Font("SansSerif", Font.PLAIN, 180);
+            gra.setFont(new1font);
+            FontMetrics new1metrics = gra.getFontMetrics(new1font);
+            gra.drawString("_______________________________________________________________", 300 - (new1metrics.stringWidth("_______________________________________________________________") / 2), 225); 
+            }         
+            gra.setColor(Color.BLUE);
+            gra.fillRect(playerX + 10, playerY, 10, 10);
+            gra.fillRect(playerX, playerY + 10, -30, 10);
+            gra.setColor(Color.RED);
+            gra.fillRect(playerx + 10, playery, 10, 10);
+            gra.fillRect(playerx, playery + 10, -30, 10);
+            
+
+                    if(Keybord.isKeyPressed(KeyEvent.VK_LEFT)&&playerX>0&&i==0) {i++;turn++;playerX-=50;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_RIGHT)&&playerX<470&&i==0) {i++;turn++;playerX+=50;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_UP)&&playerY>30&&i==0) {i++;turn++;playerY-=50;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_P)&&playerY>30&&i==0&&ulta==0) {i++;turn++;playerY-=100;ulta++;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_DOWN)&&playerY<450&&i==0) {i++;turn++;playerY+=50;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_G)&&playerY==250&&i==0&&count==0) {i++;turn=0;turnb=20;gra.setColor(Color.BLACK);
+                        gra.setFont(new Font("SansSerif", Font.PLAIN, 50));gra.drawString("爆弾設置", 0, 470);count++;}
+                        
+                    if(Keybord.isKeyPressed(KeyEvent.VK_K)&&playery==playerY&&playerx==playerX&&i==1){screen = Enue.GAMEOVER;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_A)&&playerx>0&&i==1) {i--;turnb++;playerx-=50;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_D)&&playerx<470&&i==1) {i--;turnb++;playerx+=50;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_W)&&playery>30&&i==1) {i--;turnb++;playery-=50;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_Q)&&playery<450&&i==1&&ultb==0) {i--;turnb++;playery+=100;ultb++;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_S)&&playery<450&&i==1) {i--;turnb++;playery+=50;}
+                    if(Keybord.isKeyPressed(KeyEvent.VK_X)&&playery==250&&i==1&&count==1) {gra.setColor(Color.BLACK);
+                        gra.setFont(new Font("SansSerif", Font.PLAIN, 50));gra.drawString("爆弾解除", 0, 470);count++;}
+
+                    if(turn==15){screen = Enue.GAMEOVER;}
+                    if(turnb==25){screen = Enue.GAMEOVER;}
+                        
+                    if(count==2){
+                        screen = Enue.GAMEOVER;
+                    }
+        
+            break;
+             case GAMEOVER:
+             gra.setColor(Color.BLACK);
+            Font nenfont = new Font("SansSerif", Font.PLAIN, 20);
+            gra.setFont(nenfont);
+            FontMetrics newnmetrics = gra.getFontMetrics(nenfont);
+            gra.drawString("カウンターテロリストの勝ちです", 300 - (newnmetrics.stringWidth("カウンターテロリストの勝ちです") / 2), 150);
+            gra.drawString("再ゲームはspace", 300 - (newnmetrics.stringWidth("再ゲームはspace") / 2), 225); 
+            count=0;
+            if(Keybord.isKeyPressed(KeyEvent.VK_SPACE)) screen = Enue.START;
+            break;
+
+            case GAMEOVER2:
+            gra.setColor(Color.BLACK);
+            Font nefont = new Font("SansSerif", Font.PLAIN, 20);
+            gra.setFont(nefont);
+            FontMetrics nenmetrics = gra.getFontMetrics(nefont);
+            gra.drawString("テロリストの勝ちです", 300 - (nenmetrics.stringWidth("テロリストの勝ちです") / 2), 150);
+            gra.drawString("再ゲームはspace", 300 - (nenmetrics.stringWidth("再ゲームはspace") / 2), 225); 
+            count=0;
+            if(Keybord.isKeyPressed(KeyEvent.VK_SPACE)) screen = Enue.START;
+            break;
+            }
+
+         gra.setColor(Color.BLACK);
+             gra.setFont(new Font("SansSerif", Font.PLAIN, 1));
+             gra.drawString(FPS + "", 0, 470);
+
+             Frame.panel.draw();
+
+            try {
+                long runTime = System.currentTimeMillis() - startTime;
+                if(runTime<(1000 / fps)) {
+                    Thread.sleep((1000 / fps) - (runTime));
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+    }
+}
+}
+</body>
+</html>
